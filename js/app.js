@@ -238,19 +238,9 @@ $(document).ready(function () {
 
 
 
-//   function getSeason() {
+  function getSeason() {
 
-//   const month = new Date().getMonth() + 1;
-
-//   if (month >= 12 || month <= 2) return "summer";
-//   if (month >= 3 && month <= 5) return "autumn";
-//   if (month >= 6 && month <= 8) return "winter";
-//   return "spring";
-// }
-
-function getSeason() {
-
-  const month = 7; // 👈 CAMBIÁ ESTE NÚMERO
+  const month = new Date().getMonth() + 1;
 
   if (month >= 12 || month <= 2) return "summer";
   if (month >= 3 && month <= 5) return "autumn";
