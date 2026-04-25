@@ -249,6 +249,7 @@ $(document).ready(function () {
 }
 
 
+
 function renderSeason() {
 
   const layer = $("#seasonLayer");
