@@ -1,0 +1,296 @@
+/* 🔹 RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🔹 BODY */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+  min-height: 100vh;
+  text-align: center;
+  transition: background 0.5s ease;
+}
+
+/* 🔹 CONTENEDOR PRINCIPAL */
+.app {
+  padding: 40px 20px;
+}
+
+/* 🔹 TÍTULO */
+h1 {
+  margin-bottom: 20px;
+}
+
+/* 🔍 BUSCADOR */
+.search-box {
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  padding: 10px;
+  width: 200px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-box button {
+  padding: 10px 15px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: 0.3s;
+}
+
+.search-box button:hover {
+  background: #555;
+}
+
+/* ⏳ LOADER */
+.loader {
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* ❌ ERROR */
+.error {
+  margin-top: 20px;
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* 🌡️ WEATHER CARD */
+.weather-card {
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 300px;
+
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.15);
+
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.weather-card h2 {
+  margin-bottom: 10px;
+}
+
+.weather-card p {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+/* ⭐ BOTÓN FAVORITOS */
+#saveCity {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: none;
+  background: #ffcc00;
+  color: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#saveCity:hover {
+  background: #ffd633;
+}
+
+/* 📊 PRONÓSTICO */
+.forecast {
+  margin-top: 30px;
+}
+
+#forecastContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* 📦 CARD DE PRONÓSTICO */
+.forecast-card {
+  margin: 10px;
+  padding: 15px;
+  width: 120px;
+
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.15);
+
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* ⭐ FAVORITOS */
+.favorites {
+  margin-top: 40px;
+}
+
+.favorites ul {
+  list-style: none;
+  padding: 0;
+}
+
+.favorites li {
+  margin: 5px 0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.favorites li:hover {
+  color: #ffd633;
+}
+
+/* 🌧️ EFECTO LLUVIA */
+.rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  background: url('https://i.ibb.co/7QpKsCX/rain.png');
+  animation: rain 0.5s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes rain {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* 🔹 UTILIDAD */
+.hidden {
+  display: none;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 600px) {
+
+  .search-box input {
+    width: 140px;
+  }
+
+  .forecast-card {
+    width: 90px;
+    font-size: 12px;
+  }
+
+  .weather-card {
+    max-width: 90%;
+  }
+
+}
+
+#seasonLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* el contenido arriba de todo */
+.app {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+
+
+
+.leaf {
+  position: absolute;
+  top: -50px;
+  font-size: 20px;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+
+
+
+
+.snow {
+  position: absolute;
+  top: -10px;
+  font-size: 10px;
+  opacity: 0.9;
+  animation: snowFall linear infinite;
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+
+
+
+
+.flower {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0.9;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(0.8) rotate(80deg);
+  }
+  100% {
+    transform: translateY(-10vh) scale(1.4) rotate(20deg);
+  }
+}
+
+
+
+
+.sun-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 220, 100, 0.8);
+  border-radius: 50%;
+  animation: floatSun linear infinite;
+}
+
+@keyframes floatSun {
+  0% {
+    transform: translateY(110vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(70deg);
+  }
+}
+
+
+

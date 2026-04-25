@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <div id="seasonLayer"></div>
+
+  <div class="app">
+
+    <h1>🌤️ Weather App Pro</h1>
+
+    <!-- 🔍 BUSCADOR -->
+    <div class="search-box">
+      <input type="text" id="cityInput" placeholder="Buscar ciudad...">
+      <button id="searchBtn">Buscar</button>
+    </div>
+
+    <!-- ⏳ LOADER -->
+    <div class="loader hidden">
+      <p>Cargando clima...</p>
+    </div>
+
+    <!-- ❌ ERROR -->
+    <div class="error hidden" id="errorMsg">
+      Ciudad no encontrada ❌
+    </div>
+
+    <!-- 🌡️ CLIMA ACTUAL -->
+    <div class="weather-card hidden">
+
+      <!-- 🏙️ ciudad -->
+      <h2 id="cityName"></h2>
+
+      <!-- 😎 emoji clima -->
+      <h1 id="emoji"></h1>
+
+      <!-- 🖼️ icono API -->
+      <img id="weatherIcon" alt="icono clima">
+
+      <!-- 🌡️ temperatura -->
+      <p id="temperature"></p>
+
+      <!-- 🌤️ descripción -->
+      <p id="description"></p>
+
+      <!-- ⭐ favoritos -->
+      <button id="saveCity">⭐ Guardar en favoritos</button>
+
+    </div>
+
+    <!-- 📊 PRONÓSTICO -->
+    <div class="forecast hidden">
+      <h3>Pronóstico 3 días</h3>
+      <div id="forecastContainer"></div>
+    </div>
+
+    <!-- ⭐ FAVORITOS -->
+    <div class="favorites">
+      <h3>Ciudades favoritas</h3>
+      <ul id="favoritesList"></ul>
+    </div>
+
+  </div>
+
+  <!-- 🌧️ EFECTO LLUVIA -->
+  <div class="rain hidden"></div>
+
+  <!-- JS -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
