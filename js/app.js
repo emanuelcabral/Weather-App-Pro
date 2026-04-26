@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  const apiKey = "133b82daad144479a49221438262404"; // 🔑 WeatherAPI key
+  const apiKey = "133b82daad144479a49221438262404";
 
   let currentCity = "Buenos Aires";
 
@@ -90,34 +90,54 @@ $(document).ready(function () {
     $("#temperature").text(`${data.current.temp_c}°C`);
     $("#description").text(condition);
 
-    // 🖼️ ICONO OFICIAL
     $("#weatherIcon").attr("src", "https:" + icon);
 
-    // 😎 EMOJI
     $("#emoji").text(getWeatherEmoji(condition));
 
     $(".weather-card").removeClass("hidden");
 
     changeBackground(condition);
 
-    // 🌙 modo noche
     if (icon.includes("night")) {
       $("body").css("background", "linear-gradient(to right, #141e30, #243b55)");
     }
   }
 
-  // 📊 PRONÓSTICO 3 DÍAS
-  function getForecast(city) {
+    function getForecast(city) {
 
-    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3&lang=es`;
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7&lang=es`;
 
     $.ajax({
       url: url,
       method: "GET",
       success: function (data) {
-        renderForecast(data.forecast.forecastday);
+
+        const days = data.forecast.forecastday;
+
+        const today = days[0];
+
+        $("#tempMax").text(`⬆️ Máx: ${today.day.maxtemp_c}°C`);
+        $("#tempMin").text(`⬇️ Mín: ${today.day.mintemp_c}°C`);
+
+        renderForecast(days);
       }
     });
+  }
+
+  function formatDate(dateString) {
+
+    const parts = dateString.split("-");
+    const date = new Date(parts[0], parts[1] - 1, parts[2]);
+
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    };
+
+    let formatted = date.toLocaleDateString("es-AR", options);
+
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
   }
 
   function renderForecast(days) {
@@ -126,17 +146,24 @@ $(document).ready(function () {
 
     days.forEach(day => {
 
-      const date = day.date;
-      const temp = day.day.avgtemp_c;
+      const date = formatDate(day.date);
+      const min = day.day.mintemp_c;
+      const max = day.day.maxtemp_c;
       const text = day.day.condition.text;
       const icon = "https:" + day.day.condition.icon;
 
       $("#forecastContainer").append(`
         <div class="forecast-card">
-          <p>${date}</p>
+          <p style="color:yellow;text-transform:capitalize;">${date}</p>
           <img src="${icon}" width="50">
-          <p>${temp}°C</p>
           <p>${getWeatherEmoji(text)}</p>
+
+          <p style="font-size: 14px;font-weight:bold;color:gray">
+            ⬆️ ${max}°C
+          </p>
+          <p style="font-size: 14px; font-weight:bold;color:gray">
+            ⬇️ ${min}°C
+          </p>
         </div>
       `);
     });
@@ -144,7 +171,6 @@ $(document).ready(function () {
     $(".forecast").removeClass("hidden");
   }
 
-  // 😎 EMOJIS CLIMA
   function getWeatherEmoji(condition) {
 
     const c = condition.toLowerCase();
@@ -155,10 +181,9 @@ $(document).ready(function () {
     if (c.includes("snow")) return "❄️";
     if (c.includes("storm") || c.includes("thunder")) return "⛈️";
 
-    return "🌈";
+    return "";
   }
 
-  // ❌ ERROR
   function showError() {
     hideLoader();
     $("#errorMsg").removeClass("hidden");
@@ -168,7 +193,6 @@ $(document).ready(function () {
     $("#errorMsg").addClass("hidden");
   }
 
-  // ⏳ LOADER
   function showLoader() {
     $(".loader").removeClass("hidden");
     $(".weather-card").addClass("hidden");
@@ -180,7 +204,6 @@ $(document).ready(function () {
     $(".loader").addClass("hidden");
   }
 
-  // 🎨 BACKGROUND DINÁMICO
   function changeBackground(weather) {
 
     $(".rain").addClass("hidden");
@@ -202,7 +225,7 @@ $(document).ready(function () {
     }
   }
 
-  // ⭐ FAVORITOS
+    // ⭐ FAVORITOS
   $("#saveCity").click(function () {
 
     if (!currentCity) return;
@@ -216,7 +239,7 @@ $(document).ready(function () {
     }
   });
 
-  // 📌 RENDER FAVORITOS
+  // 📌 RENDER FAVORITOS (MEJORADO con data-city)
   function renderFavorites() {
 
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -224,83 +247,97 @@ $(document).ready(function () {
     $("#favoritesList").empty();
 
     favorites.forEach(city => {
-      $("#favoritesList").append(`<li>${city}</li>`);
+      $("#favoritesList").append(`
+        <li data-city="${city}">
+          ${city} <span class="delete-fav">❌</span>
+        </li>
+      `);
     });
   }
 
-  // 🔁 CLICK EN FAVORITO
+  // 🔁 CLICK EN FAVORITO (usa data-city)
   $(document).on("click", "#favoritesList li", function () {
-    const city = $(this).text();
+    const city = $(this).data("city");
     getWeather(city);
+  });
+
+  // ❌ ELIMINAR FAVORITO (ARREGLADO)
+  $(document).on("click", ".delete-fav", function (e) {
+
+    e.stopPropagation(); // evita que se active el click del li
+
+    const city = $(this).parent().data("city");
+
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    favorites = favorites.filter(fav => fav !== city);
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    renderFavorites();
   });
 
   renderFavorites();
 
-
-
+  // 🌸 TEMPORADAS
   function getSeason() {
 
-  const month = new Date().getMonth() + 1;
+    const month = new Date().getMonth() + 1;
 
-  if (month >= 12 || month <= 2) return "summer";
-  if (month >= 3 && month <= 5) return "autumn";
-  if (month >= 6 && month <= 8) return "winter";
-  return "spring";
-}
-
-
-
-function renderSeason() {
-
-  const layer = $("#seasonLayer");
-  layer.empty();
-
-  const season = getSeason();
-
-  let icons = [];
-  let className = "";
-
-  if (season === "autumn") {
-    icons = ["🍂", "🍁"];
-    className = "leaf";
+    if (month >= 12 || month <= 2) return "summer";
+    if (month >= 3 && month <= 5) return "autumn";
+    if (month >= 6 && month <= 8) return "winter";
+    return "spring";
   }
 
-  if (season === "winter") {
-    icons = ["❄️"];
-    className = "snow";
+  function renderSeason() {
+
+    const layer = $("#seasonLayer");
+    layer.empty();
+
+    const season = getSeason();
+
+    let icons = [];
+    let className = "";
+
+    if (season === "autumn") {
+      icons = ["🍂", "🍁"];
+      className = "leaf";
+    }
+
+    if (season === "winter") {
+      icons = ["❄️"];
+      className = "snow";
+    }
+
+    if (season === "spring") {
+      icons = ["🌸", "🌼", "🪻", "🏵️"];
+      className = "flower";
+    }
+
+    if (season === "summer") {
+      icons = ["☀️"];
+      className = "sun-dot";
+    }
+
+    for (let i = 0; i < 25; i++) {
+
+      const icon = icons[Math.floor(Math.random() * icons.length)];
+
+      const el = $("<div></div>")
+        .addClass(className)
+        .text(icon)
+        .css({
+          left: Math.random() * 100 + "vw",
+          animationDuration: (5 + Math.random() * 5) + "s",
+          fontSize: (10 + Math.random() * 20) + "px",
+          opacity: Math.random()
+        });
+
+      layer.append(el);
+    }
   }
-
-  if (season === "spring") {
-    icons = ["🌸", "🌼", "🪻", "🏵️"];
-    className = "flower";
-  }
-
-  if (season === "summer") {
-    icons = ["☀️"];
-    className = "sun-dot";
-  }
-
-  for (let i = 0; i < 25; i++) {
-
-    const icon = icons[Math.floor(Math.random() * icons.length)];
-
-    const el = $("<div></div>")
-      .addClass(className)
-      .text(icon)
-      .css({
-        left: Math.random() * 100 + "vw",
-        animationDuration: (5 + Math.random() * 5) + "s",
-        fontSize: (10 + Math.random() * 20) + "px",
-        opacity: Math.random()
-      });
-
-    layer.append(el);
-  }
-}
-
 
   renderSeason();
 
 });
-
-
