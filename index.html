@@ -14,7 +14,8 @@
 
 <body>
 
-    <div id="seasonLayer"></div>
+  <!-- 🌍 CAPA ESTACIONAL -->
+  <div id="seasonLayer"></div>
 
   <div class="app">
 
@@ -40,16 +41,22 @@
     <div class="weather-card hidden">
 
       <!-- 🏙️ ciudad -->
-      <h2 id="cityName"></h2>
+      <h2 id="cityName" style="color:yellow"></h2>
 
-      <!-- 😎 emoji clima -->
+      <!-- 😎 emoji -->
       <h1 id="emoji"></h1>
 
-      <!-- 🖼️ icono API -->
+      <!-- 🖼️ icono -->
       <img id="weatherIcon" alt="icono clima">
 
-      <!-- 🌡️ temperatura -->
+      <!-- 🌡️ temperatura actual -->
       <p id="temperature"></p>
+
+      <!-- 📊 MIN / MAX -->
+      <div class="temp-range">
+        <p id="tempMax"></p>
+        <p id="tempMin"></p>
+      </div>
 
       <!-- 🌤️ descripción -->
       <p id="description"></p>
@@ -61,7 +68,7 @@
 
     <!-- 📊 PRONÓSTICO -->
     <div class="forecast hidden">
-      <h3>Pronóstico 3 días</h3>
+      <h3>Pronóstico 7 días</h3>
       <div id="forecastContainer"></div>
     </div>
 
